@@ -1,0 +1,19 @@
+.mainContainer{
+    position: relative;
+    left: 12vw;
+    width: 70vw;
+    height: 10vh;
+}
+
+.albumRow{
+    display: flex;
+}
+
+.albumContainer{
+    display: flex;
+    flex-direction: column ;
+}
+
+.albumContainer p.albumName{
+    font-size: 1.5rem;
+}
