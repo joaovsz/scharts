@@ -1,11 +1,19 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import { Header } from "@/components/Header/Header";
+import { Albuns } from "@/components/TopAlbuns/Albuns";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const inter = Inter({ subsets: ['latin'] })
+// const SCOPES_URL_PARAMS = SCOPES.join(SPACE_DELIMITER);
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLogged = useSelector((logged: any) => logged.requests.isLoggedIn);
+  useEffect(() => {
+    setIsLoggedIn(isLogged);
+  });
+
   return (
     <>
       <Head>
@@ -14,7 +22,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <Header />
+      <main className="container">
+        {isLogged == true ? (
+          <Albuns />
+        ) : (
+          <h2>Você precisa estar conectado para ver as informações</h2>
+        )}
+      </main>
     </>
   );
 }
