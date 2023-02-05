@@ -28,7 +28,9 @@ const stock = createSlice({
       window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES}&response_type=token&show_dialog=true`;
       state.tracks.push({ name: "Ow boy" });
     },
-
+    increment: (state) => {
+      state.tracks.push({ name: "Dizeres" });
+    },
     getAuthParams: (state, action: { type: string; payload: string }) => {
       const tokenAfterHash = action.payload.substring(1);
       const paramsInUrl = tokenAfterHash.split("&");
@@ -41,7 +43,6 @@ const stock = createSlice({
         {}
       );
       state.params = paramsSplitUp;
-      state.token = "sdklmaskdmlaskmfmdci";
     },
 
     fetchPlaybackStatus: (state, action: { type: string; payload: {} }) => {

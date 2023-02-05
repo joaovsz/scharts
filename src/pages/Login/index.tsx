@@ -6,11 +6,6 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (window.location.hash) {
-      dispatch(getAuthParams(window.location.hash));
-    }
-  });
   const ParamsSplitUp = useSelector((store: any) => store.requests.params);
   const { access_token } = ParamsSplitUp;
 

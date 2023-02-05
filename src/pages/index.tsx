@@ -12,7 +12,7 @@ export default function Home() {
   const isLogged = useSelector((logged: any) => logged.requests.isLoggedIn);
   useEffect(() => {
     setIsLoggedIn(isLogged);
-  });
+  }, []);
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="container">
-        {isLogged == true ? (
+        {isLogged == false ? (
           <Albuns />
         ) : (
           <h2>Você precisa estar conectado para ver as informações</h2>
