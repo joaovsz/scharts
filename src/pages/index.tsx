@@ -1,19 +1,22 @@
 import { Header } from "@/components/Header/Header";
 import { Albuns } from "@/components/TopAlbuns/Albuns";
+import { getAuthParams } from "@/redux/request-slice";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // const SCOPES_URL_PARAMS = SCOPES.join(SPACE_DELIMITER);
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
   const isLogged = useSelector((logged: any) => logged.requests.isLoggedIn);
-  useEffect(() => {
-    setIsLoggedIn(isLogged);
-  }, []);
 
+  useEffect(() => {
+    if (window.location.hash) {
+      dispatch(getAuthParams(window.location.hash));
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -24,11 +27,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="container">
-        {isLogged == false ? (
-          <Albuns />
-        ) : (
-          <h2>Você precisa estar conectado para ver as informações</h2>
-        )}
+        <Albuns />
       </main>
     </>
   );

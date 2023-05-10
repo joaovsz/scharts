@@ -1,14 +1,23 @@
+import { getAuthParams, handleLogin } from "@/redux/request-slice";
+import { RootState } from "@/redux/store";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Header.module.css";
 export const Header = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.requests.isLoggedIn
+  );
+  const user = useSelector((state: RootState) => state.requests.user);
+
   return (
     <>
       <header className={styles.headerContainer}>
         <div className={styles.userContainer}>
           <div className={styles.userContent}>
             <img src="" />
-            <h1>João Vitor Souza</h1>
+            <a href="http://localhost:8080/login">Conecte-se</a>
           </div>
         </div>
         <div className={styles.container}>
