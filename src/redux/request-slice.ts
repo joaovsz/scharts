@@ -1,13 +1,21 @@
 import { Album } from "@/types/album";
 import { createSlice } from "@reduxjs/toolkit";
-import SpotifyWebApi from "spotify-web-api-js";
-
 const initialState = {
-  user: { name: "João Vitor S" },
+  user: {
+    name: "João Vitor",
+    perfil: "https://avatars.githubusercontent.com/u/87434656?s=96&v=4",
+  },
   params: {} as Params,
   token: "",
   isLoggedIn: false,
   tracks: [{}],
+  playing: {
+    name: "Nada tocando",
+    artists: "",
+    artistName: "",
+    images: "",
+  } as Album,
+  backgroundPlayer: "",
 };
 
 export type Params = {
@@ -15,13 +23,6 @@ export type Params = {
   expires_in: number;
   token_type: string;
 };
-
-const CLIENT_ID = "dc1a822c2a73439c9fbb2ea8f8b7e424";
-const CLIENT_SECRET = "683776ce5cd9473f9ead3d3af11dfb90";
-const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000";
-const SPACE_DELIMITER = "%20";
-const SCOPES = "user-read-playback-state";
 
 const stock = createSlice({
   name: "requests",
@@ -32,51 +33,28 @@ const stock = createSlice({
       // state.tracks.push({ name: "Ow boy" });
     },
     increment: (state) => {
-      state.tracks.push({ name: "Dizeres" });
+      state.tracks.push();
     },
     getAuthParams: (state, action: { type: string; payload: string }) => {
-      const tokenAfterHash = action.payload.substring(1);
-      const paramsInUrl = tokenAfterHash.split("&");
-      const paramsSplitUp: Params = paramsInUrl.reduce(
-        (accumulator: any, param) => {
-          const [key, value] = param.split("=");
-          accumulator[key] = value;
-          return accumulator;
-        },
-        {}
-      );
-      state.params = paramsSplitUp;
-      // state.token = paramsSplitUp.access_token;
-      if (state.params.access_token) {
+      const token = action.payload ? action.payload.split("=")[1] : "";
+      state.token = token;
+      if (state.token) {
         state.isLoggedIn = true;
-        state.token = state.params.access_token;
       }
     },
 
-    fetchPlaybackStatus: (state) => {
-      fetch("https://api.spotify.com/v1/me/player", {
-        headers: {
-          Authorization: `Bearer ${state.params.access_token}`,
-        },
-      })
-        .then((response) => {
-          response.json();
-        })
-        .then((data: any) => {
-          console.log(data);
-          // const dataResponse = data.item.album;
-          // const { images, name, genres, artists } = dataResponse;
-          // const newAlbum: Album = {
-          //   name: name,
-          //   artists: artists,
-          //   images: images,
-          //   genres: genres,
-          // };
-          // state.tracks.push(newAlbum);
-        });
+    fetchPlaybackStatus: (state, action: { type: any; payload: Album }) => {
+      state.playing = action.payload;
+    },
+    fetchBackground: (state, action: { type: string; payload: string }) => {
+      state.backgroundPlayer = action.payload;
     },
   },
 });
-export const { handleLogin, getAuthParams, fetchPlaybackStatus } =
-  stock.actions;
+export const {
+  handleLogin,
+  getAuthParams,
+  fetchPlaybackStatus,
+  fetchBackground,
+} = stock.actions;
 export default stock.reducer;

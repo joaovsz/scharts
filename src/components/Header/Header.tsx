@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Header.module.css";
+import Player from "../Player/Player";
 export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(
@@ -16,8 +17,12 @@ export const Header = () => {
       <header className={styles.headerContainer}>
         <div className={styles.userContainer}>
           <div className={styles.userContent}>
-            <img src="" />
-            <a href="http://localhost:8080/login">Conecte-se</a>
+            <img src={user.perfil} />
+            {isLoggedIn ? (
+              <span className={styles.userName}>{user.name}</span>
+            ) : (
+              <a href="http://localhost:8080/login">Conecte-se</a>
+            )}
           </div>
         </div>
         <div className={styles.container}>
@@ -34,6 +39,7 @@ export const Header = () => {
             </Link>
           </ul>
         </div>
+        <Player />
       </header>
     </>
   );
