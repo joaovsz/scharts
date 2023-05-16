@@ -1,7 +1,7 @@
 .headerContainer {
   position: absolute;
   left: 0;
-  width: 12vw;
+  width: 20rem;
   height: 100vh;
   border-right: 1px solid rgb(126, 123, 123);
   display: flex;

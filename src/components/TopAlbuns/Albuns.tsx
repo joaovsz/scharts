@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Albuns.module.css";
-
-export const Albuns = () => {
+import Carousel from "../Carousel/Carousel";
+import { Album } from "@/types/album";
+type albunsProps = {
+  albunsType: string;
+  contentType: Album[];
+};
+export const Albuns = ({ albunsType, contentType }: albunsProps) => {
   return (
     <>
-      <main className={styles.mainContainer}>
-        <div className={styles.albumRow}></div>
-      </main>
+      <div className={styles.mainContainer}>
+        <h1>{albunsType}</h1>
+        <div className={styles.albumRow}>
+          <Carousel albunsType={albunsType} contentType={contentType} />
+        </div>
+      </div>
     </>
   );
 };

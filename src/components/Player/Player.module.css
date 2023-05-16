@@ -2,11 +2,12 @@
   position: absolute;
   bottom: 0;
   width: 10vw;
-  height: 40vh;
   border-radius: 2rem;
   /* border: 1px solid green; */
   display: flex;
-
+  margin-bottom: 2rem;
+  align-items: center;
+  text-align: center;
   background: linear-gradient(145deg, #121314, #0f1011);
   box-shadow: 16px 16px 50px #0a0b0c, -16px -16px 50px #18191a;
   flex-direction: column;

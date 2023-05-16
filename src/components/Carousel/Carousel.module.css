@@ -1,0 +1,18 @@
+.cardContainer {
+  display: flex;
+  gap: 1rem;
+  flex: 0 0 100%;
+  justify-content: flex-start;
+  height: 20rem;
+  width: 90%;
+}
+
+button.cardMore {
+  cursor: pointer;
+  width: 20rem;
+  font-weight: bold;
+  height: 100%;
+  /* background: var(--background); */
+  border: 1px solid gray;
+  border-radius: 1rem;
+}

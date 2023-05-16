@@ -6,29 +6,33 @@ import { Album } from "@/types/album";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setInterval } from "timers/promises";
 
 const index = () => {
+  const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.requests.token);
   const backgroundPlayer = useSelector(
     (state: RootState) => state.requests.backgroundPlayer
   );
   const [aux, setAux] = useState(false);
   const playing = useSelector((state: RootState) => state.requests.playing);
-  const dispatch = useDispatch();
+
   useEffect(() => {
-    const minhaFuncao = async () => {
+    const repeatFetch = async () => {
       await fetchData(token);
       console.log("Executando minha função assíncrona...");
     };
 
     const intervalId = setTimeout(async () => {
-      await minhaFuncao();
-      clearTimeout(intervalId);
+      if (token == "") {
+        return null;
+      } else {
+        await repeatFetch();
+        clearTimeout(intervalId);
+      }
     }, 6000);
 
     return () => clearTimeout(intervalId);
-  }, [aux]);
+  }, [aux, token]);
 
   async function getBackground(artistIdImage: string, token: string) {
     await fetch(`https://api.spotify.com/v1/artists/${artistIdImage}`, {
@@ -40,12 +44,11 @@ const index = () => {
       .then(async (response) => await response.json())
       .then(async (data) => {
         const dataRes = await data.images;
-        const url = await dataRes[0].url;
+        const url = dataRes[0].url;
         dispatch(fetchBackground(url));
       });
   }
-
-  const fetchData = async (token: string) => {
+  async function fetchData(token: string) {
     await fetch("https://api.spotify.com/v1/me/player", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -60,13 +63,15 @@ const index = () => {
           name: data.item.name,
           artists: artists[0].id,
           artistName: artists[0].name,
-          images: images[0].url,
+          image: images[0].url,
+          artistPhoto: "",
         };
         getBackground(newAlbum.artists, token);
         dispatch(fetchPlaybackStatus(newAlbum));
         setAux(!aux);
       });
-  };
+  }
+
   return (
     <>
       <div className={styles.albumContainer}>
