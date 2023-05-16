@@ -3,17 +3,32 @@ import { IoIosPlayCircle } from "react-icons/io";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import styles from "../Player/Player.module.css";
 import { Album } from "@/types/album";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { setInterval } from "timers/promises";
 
 const index = () => {
   const token = useSelector((state: RootState) => state.requests.token);
   const backgroundPlayer = useSelector(
     (state: RootState) => state.requests.backgroundPlayer
   );
+  const [aux, setAux] = useState(false);
   const playing = useSelector((state: RootState) => state.requests.playing);
   const dispatch = useDispatch();
+  useEffect(() => {
+    const minhaFuncao = async () => {
+      await fetchData(token);
+      console.log("Executando minha função assíncrona...");
+    };
+
+    const intervalId = setTimeout(async () => {
+      await minhaFuncao();
+      clearTimeout(intervalId);
+    }, 6000);
+
+    return () => clearTimeout(intervalId);
+  }, [aux]);
 
   async function getBackground(artistIdImage: string, token: string) {
     await fetch(`https://api.spotify.com/v1/artists/${artistIdImage}`, {
@@ -49,6 +64,7 @@ const index = () => {
         };
         getBackground(newAlbum.artists, token);
         dispatch(fetchPlaybackStatus(newAlbum));
+        setAux(!aux);
       });
   };
   return (
@@ -68,7 +84,7 @@ const index = () => {
           </span>
           <p className={styles.albumName}>{playing.name}</p>
           <p className={styles.albumName}>{playing.artistName}</p>
-          <button onClick={() => fetchData(token)}>Listar</button>
+          {/* <button onClick={() => fetchData(token)}>Listar</button> */}
         </div>
       </div>
     </>

@@ -17,7 +17,7 @@ export const Header = () => {
       <header className={styles.headerContainer}>
         <div className={styles.userContainer}>
           <div className={styles.userContent}>
-            <img src={user.perfil} />
+            <img src={user.perfil} className={styles.userPhoto} />
             {isLoggedIn ? (
               <span className={styles.userName}>{user.name}</span>
             ) : (
