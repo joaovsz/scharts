@@ -3,6 +3,7 @@
   position: relative;
   width: 100vw;
   height: 30rem;
+
 }
 .mainContainer h1 {
   padding: 2rem 0;
@@ -11,6 +12,7 @@
 }
 
 .albumRow {
+  
   width: 90%;
   height: 40vh;
   display: flex;

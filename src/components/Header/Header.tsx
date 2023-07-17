@@ -1,24 +1,39 @@
 import { getAuthParams, getUser } from "@/redux/request-slice";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Header.module.css";
 import Player from "../Player/Player";
 import { User } from "@/types/User";
 export const Header = () => {
   const dispatch = useDispatch();
+  const [aux, setAux] = useState(false);
   const isLoggedIn = useSelector(
     (state: RootState) => state.requests.isLoggedIn
   );
   const user = useSelector((state: RootState) => state.requests.user);
   const token = useSelector((state: RootState) => state.requests.token);
   useEffect(() => {
-    fetchCurrentUser(token);
-  }, []);
+    const repeatFetch = async () => {
+      await fetchCurrentUser(token);
+      console.log("Executando minha função assíncrona...");
+    };
+
+    const intervalId = setTimeout(async () => {
+      if (token == "") {
+        return null;
+      } else {
+        await repeatFetch();
+        clearTimeout(intervalId);
+      }
+    }, 6000);
+
+    return () => clearTimeout(intervalId);
+  }, [aux, token]);
 
   async function fetchCurrentUser(token: string) {
-    await fetch("https://api.spotify.com/v1/me/", {
+    await fetch("https://api.spotify.com/v1/users/227a6pzp3kiisicws7hj26kiy", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -29,10 +44,11 @@ export const Header = () => {
         const dataResponse = await data;
         const User = {
           name: await dataResponse.display_name,
-          profilePhoto: "",
+          profilePhoto: await dataResponse.images[0].url,
         } as User;
-        console.log;
+        console.log(dataResponse);
         dispatch(getUser(User));
+        setAux(!aux);
       });
   }
   return (

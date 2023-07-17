@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../Card/CardMusic.module.css";
+import styles from "../Cards/CardMusic.module.css";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 type CardMusicProps = {

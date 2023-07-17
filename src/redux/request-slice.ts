@@ -7,15 +7,16 @@ const initialState = {
   params: {} as Params,
   token: "",
   isLoggedIn: false,
-  tracks: []as Album[],
+  recentPlayed: [] as Album[],
+  tracks: [] as Album[],
   playing: {
     name: "Nada tocando",
     artists: "",
     artistName: "",
     image: "",
-    artistPhoto: ""
+    artistPhoto: "",
   } as Album,
-  backgroundPlayer: '',
+  backgroundPlayer: "",
 };
 
 export type Params = {
@@ -28,10 +29,10 @@ const stock = createSlice({
   name: "requests",
   initialState,
   reducers: {
-    getUser: (state, action:{type: {}, payload: User}) => {
-      state.user = action.payload
+    getUser: (state, action: { type: {}; payload: User }) => {
+      state.user = action.payload;
     },
-    
+
     getAuthParams: (state, action: { type: string; payload: string }) => {
       const token = action.payload ? action.payload.split("=")[1] : "";
       state.token = token;
@@ -42,11 +43,16 @@ const stock = createSlice({
 
     fetchPlaybackStatus: (state, action: { type: any; payload: Album }) => {
       state.playing = action.payload;
-      const someTrack = state.tracks.some(((item: Album) => item.name === state.playing.name))
+      const someTrack = state.tracks.some(
+        (item: Album) => item.name === state.playing.name
+      );
       console.log(someTrack, state.playing.name);
       if (!someTrack) {
-        state.tracks.push(action.payload)
+        state.tracks.push(action.payload);
       }
+    },
+    fetchRecentPlayed: (state, action: { type: any; payload: Album }) => {
+      state.recentPlayed.push(action.payload);
     },
     fetchBackground: (state, action: { type: string; payload: string }) => {
       state.backgroundPlayer = action.payload;
@@ -57,6 +63,7 @@ export const {
   getAuthParams,
   fetchPlaybackStatus,
   fetchBackground,
-  getUser
+  getUser,
+  fetchRecentPlayed,
 } = stock.actions;
 export default stock.reducer;

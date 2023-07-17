@@ -4,12 +4,21 @@
   width: 17rem;
   height: 100%;
 }
+
 .musicImage {
   border-radius: 0.5rem;
   height: 90%;
 }
+
 .musicName {
   padding: 0.6rem 0;
-  heig: 80%;
+  height: 80%;
   font-size: 1.2rem;
+}
+
+.cardSkeleton {
+  display: flex;
+  flex-direction: column;
+  width: 17rem;
+  height: 170px;
 }

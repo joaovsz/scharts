@@ -2,14 +2,17 @@ import { Header } from "@/components/Header/Header";
 import { Albuns } from "@/components/TopAlbuns/Albuns";
 import { getAuthParams, getUser } from "@/redux/request-slice";
 import { RootState } from "@/redux/store";
+import { redirect } from "next/navigation";
 import Head from "next/head";
-import styles from "../Home/Home.module.css";
+import styles from "./Home.module.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
   const tracks = useSelector((state: RootState) => state.requests.tracks);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
     const repeatFetch = () => {
       const params = window.location.pathname;
@@ -35,7 +38,7 @@ export default function Home() {
       <Header />
       <main className={styles.container}>
         <Albuns albunsType="Ouvidas Recentemente" contentType={tracks} />
-        <Albuns albunsType="Artistas mais Ouvidos" contentType={tracks} />
+        <Albuns albunsType="Últimas ouvidas" contentType={tracks} />
       </main>
     </>
   );

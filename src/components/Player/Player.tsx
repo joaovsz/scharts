@@ -82,11 +82,11 @@ const index = () => {
             alt="undefined"
             className={styles.albumImage}
           />
-          <span className={styles.iconsPlayer}>
+          {/* <span className={styles.iconsPlayer}>
             <MdSkipPrevious />
             <IoIosPlayCircle />
             <MdSkipNext />
-          </span>
+          </span> */}
           <p className={styles.albumName}>{playing.name}</p>
           <p className={styles.albumName}>{playing.artistName}</p>
           {/* <button onClick={() => fetchData(token)}>Listar</button> */}
